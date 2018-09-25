@@ -222,32 +222,30 @@ function help () {
 }
 
 /**
- * Create a response based on the players actions
+ * Create a response based on the players commands
  * - If the player has entered a command 
- *    - extract the command from the inputted action
- *    - check if the entered command is a valid
+ *    - extract the command from the player's input
+ *      - the explode function will split the input on the space separate the 
+ *        command from the option
+ *    - check if the entered command is a valid function using function_exists
  *      - check for a command option
- *        - execute command with option and get response
+ *        - execute command with option using the variable function technique
+ *        - updateResponse with function's results
  *      - else
- *        - execute command and get response
- * - Else if session data exists
- *    - get the response history
- * - 
+ *        - execute command using the variable function technique
+ *        - updateResponse with function's results
+ *    - else
+ *      - updateResponse with invalid command  
  */
-if (isset($_POST['action'])) {
-  $action = explode(' ', strtolower($_POST['action']));
-  if (function_exists($action[0])) {
-    if (isset($action[1])) {
-      $response = updateResponse($action[0]($action[1]));
+if (isset($_POST['command'])) {
+  $command = explode(' ', strtolower($_POST['command']));
+  if (function_exists($command[0])) {
+    if (isset($command[1])) {
+      updateResponse($command[0]($command[1]));
     } else {
-      $response = updateResponse($action[0]());
+      updateResponse($command[0]());
     }
-    
   } else {
-    $response = updateResponse("{$_POST['action']} is not a valid command");
+    updateResponse("{$_POST['command']} is not a valid command");
   }
-} elseif (isset($_SESSION['blacksmith'])) {
-  $response = getResponse();
-} else {
-  $response = updateResponse(help());
 }
