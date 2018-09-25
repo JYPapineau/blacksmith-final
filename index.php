@@ -12,12 +12,14 @@
 <body>
   <h1>Blacksmith</h1>
   <div id="response" class="response">
-    <?php if (isset($response)): ?>
-      <?php echo $response; ?>
-    <?php endif; ?> 
+  <?php if (isset($_SESSION['blacksmith']['response'])): ?>
+      <?php echo getResponse(); ?>
+    <?php else: ?> 
+      <?php echo updateResponse(help()); ?>
+    <?php endif; ?>
   </div>
   <form method="post">
-    <input type="text" name="action" class="action">
+    <input type="text" name="command" class="action">
   </form>
   <script src="blacksmith.js"></script>
 </body>
